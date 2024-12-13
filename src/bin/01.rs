@@ -31,8 +31,23 @@ pub fn part_one(input: &str) -> Option<u64> {
     Some(sum)
 }
 
-pub fn part_two(_input: &str) -> Option<u64> {
-    None
+pub fn part_two(input: &str) -> Option<u64> {
+    let (left, right) = get_two_columns(input);
+
+    let mut occurrences = std::collections::HashMap::<u64, u64>::new();
+    for &num in &right {
+        *occurrences.entry(num).or_insert(0) += 1;
+    }
+
+    let mut similarity_score = 0;
+    for &num in &left {
+        if let Some(&count) = occurrences.get(&num) {
+            similarity_score += num * count;
+        }
+    }
+    
+    Some(similarity_score)
+    
 }
 
 #[cfg(test)]
